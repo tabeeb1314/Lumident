@@ -9,6 +9,7 @@ import {
   Check 
 } from 'lucide-react';
 import { CLINIC_PILLARS } from '../data/clinicData';
+import clinicInteriorImage from '../assets/images/clinic_interior_treatment_1793092932163.jpg';
 
 export const WhyChooseUs: React.FC = () => {
   const [imageError, setImageError] = useState(false);
@@ -56,7 +57,7 @@ export const WhyChooseUs: React.FC = () => {
             <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 shadow-md bg-white h-full min-h-[380px]">
               {!imageError ? (
                 <img
-                  src="/src/assets/images/clinic_interior_treatment_1793092932163.jpg"
+                  src={clinicInteriorImage}
                   alt="Lumident Dental Studio state-of-the-art operatory suite overlooking garden greenery"
                   referrerPolicy="no-referrer"
                   onError={() => setImageError(true)}
@@ -65,9 +66,9 @@ export const WhyChooseUs: React.FC = () => {
                 />
               ) : (
                 <div className="w-full h-full min-h-[380px] bg-gradient-to-br from-[#FAF9F6] to-[#DDF3EB]/50 flex flex-col items-center justify-center p-8 text-center">
-                  <Sparkles className="w-10 h-10 text-[#123C42] mb-3" />
+                  
                   <h3 className="font-display font-semibold text-slate-800">Garden View Operatory</h3>
-                  <p className="text-xs text-slate-500 mt-1 max-w-xs">Designed for tranquility and clinical precision.</p>
+                  <p className="text-xs text-slate-500 mt-1 max-w-xs">A calm, thoughtfully designed treatment space.</p>
                 </div>
               )}
 
