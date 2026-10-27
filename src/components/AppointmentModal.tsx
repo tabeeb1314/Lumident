@@ -5,6 +5,8 @@ import { AppointmentFormData } from '../types';
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
 
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
+
 interface AppointmentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -34,6 +36,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<AppointmentFormData | null>(null);
+  const [submitError, setSubmitError] = useState('');
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
@@ -461,6 +464,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
               </div>
 
               {/* Action Buttons */}
+              {submitError && <p role="alert" className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-3">{submitError} If this is the first submission, the inbox owner may need to activate the form using the confirmation email.</p>}
               <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-3">
                 <button
                   type="button"
