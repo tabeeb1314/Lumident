@@ -1,0 +1,6 @@
+{
+  "name": "Lumident Dental Studio",
+  "description": "Premium modern family and cosmetic dental clinic website showcasing services, dentist profiles, patient experience, and validated appointment requests.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
