@@ -5,8 +5,6 @@ import { AppointmentFormData } from '../types';
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
 
-const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
-
 interface AppointmentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -36,7 +34,6 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<AppointmentFormData | null>(null);
-  const [submitError, setSubmitError] = useState('');
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
