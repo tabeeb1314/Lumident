@@ -1,4 +1,7 @@
 import { Dentist, FaqItem, ServiceDetail, Testimonial } from '../types';
+import leadDentistImage from '../assets/images/dentist_portrait_lead_1793092932954.jpg';
+import orthodontistImage from '../assets/images/dentist_portrait_ortho_1793092933305.jpg';
+import implantDentistImage from '../assets/images/dentist_portrait_implant_1793092951456.jpg';
 
 export const CLINIC_CONTACT = {
   name: 'Lumident Dental Studio',
@@ -266,7 +269,7 @@ export const DENTISTS: Dentist[] = [
     bio: 'Dr. Rostova has spent over 14 years refining conservative cosmetic dentistry. Her practice emphasizes biomimetic principles—preserving maximum natural tooth structure while achieving balanced, luminous aesthetics.',
     philosophy: 'A truly beautiful smile looks harmonious with who you are. We listen carefully, never rush, and use digital visualization so you are an active partner in your care.',
     experienceYears: 14,
-    image: '/src/assets/images/dentist_portrait_lead_1793092932954.jpg',
+    image: leadDentistImage,
     daysAvailable: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
   },
   {
@@ -278,7 +281,7 @@ export const DENTISTS: Dentist[] = [
     bio: 'Dr. Vance combines digital smile modeling with orthodontic biomechanics. He specializes in discrete clear aligner treatments for busy professionals and comprehensive bite balancing for young adults.',
     philosophy: 'Orthodontics is not only about straight teeth; it is about healthy breathing, balanced jaw posture, and a comfortable bite that lasts a lifetime.',
     experienceYears: 11,
-    image: '/src/assets/images/dentist_portrait_ortho_1793092933305.jpg',
+    image: orthodontistImage,
     daysAvailable: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   },
   {
@@ -290,7 +293,7 @@ export const DENTISTS: Dentist[] = [
     bio: 'Dr. Chen specializes in computer-guided implant surgery and minimally invasive periodontal therapies. He is passionate about restoring functional chewing comfort for patients missing natural teeth.',
     philosophy: 'Surgical dentistry should be gentle, predictable, and transparent. We explain every step beforehand and utilize 3D computer guidance for maximum precision.',
     experienceYears: 12,
-    image: '/src/assets/images/dentist_portrait_implant_1793092951456.jpg',
+    image: implantDentistImage,
     daysAvailable: ['Monday', 'Wednesday', 'Friday', 'Saturday'],
   },
 ];
