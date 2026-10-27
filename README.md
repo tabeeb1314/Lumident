@@ -110,7 +110,7 @@ The site is built with a responsive single-page architecture featuring smooth sc
 ## 4. Local Development & Build Commands
 
 ### Prerequisites
-- Node.js $\ge 18$
+- Node.js 20.19+ (required by Vite 8)
 - npm $\ge 9$
 
 ### Install Dependencies
@@ -149,9 +149,7 @@ Generates optimized static assets in `/dist`.
 4. Add `_redirects` file (`/* /index.html 200`) if adding client-side sub-routing.
 
 ### Deploying to GitHub Pages
-1. In `vite.config.ts`, set `base: '/<repo-name>/'`.
-2. Build using `npm run build`.
-3. Deploy the `dist` directory using `gh-pages` branch or GitHub Actions.
+A GitHub Actions workflow in `.github/workflows/deploy.yml` builds the Vite app and deploys `dist/` on each push to `main`. In the repository, open **Settings → Pages → Build and deployment** and set **Source** to **GitHub Actions**. The expected project URL is `https://tabeeb1314.github.io/Lumident/` once the workflow succeeds.
 
 ---
 
