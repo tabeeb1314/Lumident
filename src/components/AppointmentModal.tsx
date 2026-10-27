@@ -3,6 +3,8 @@ import { X, Calendar, Clock, User, Mail, Phone, Stethoscope, CheckCircle2, Alert
 import { SERVICES, DENTISTS } from '../data/clinicData';
 import { AppointmentFormData } from '../types';
 
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
+
 interface AppointmentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -32,6 +34,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<AppointmentFormData | null>(null);
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     if (preselectedServiceId) {
@@ -78,18 +81,46 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-
-    // Simulate network submission with honest client-side confirmation
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
+    setSubmitError('');
+    const serviceName = SERVICES.find((service) => service.id === formData.serviceId)?.name || formData.serviceId;
+    const dentistName = DENTISTS.find((dentist) => dentist.id === formData.dentistId)?.name || 'First Available Clinician';
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `[Lumident Appointment Request] ${formData.fullName.trim()} — ${formData.preferredDate}`,
+          _replyto: formData.email.trim(),
+          _template: 'table',
+          form_type: 'Appointment request (not yet confirmed)',
+          full_name: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || 'Not provided',
+          requested_service: serviceName,
+          dentist_preference: dentistName,
+          preferred_date: formData.preferredDate,
+          preferred_time_window: formData.preferredTime,
+          first_visit: formData.isFirstVisit ? 'Yes' : 'No',
+          notes: formData.notes.trim() || 'None',
+          _honey: '',
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok || String(result.success) !== 'true') {
+        throw new Error(result.message || 'The appointment request could not be sent. Please try again.');
+      }
       setSubmittedData({ ...formData });
-    }, 900);
+      setIsSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
@@ -132,7 +163,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
               <span>Direct Studio Request</span>
             </div>
             <h2 id="booking-modal-title" className="font-display text-2xl font-bold text-[#123C42]">
-              {isSubmitted ? 'Demo Request Summary' : 'Request an Appointment'}
+              {isSubmitted ? 'Request Submitted' : 'Request an Appointment'}
             </h2>
           </div>
           <button
@@ -153,10 +184,10 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                 <CheckCircle2 className="w-6 h-6 text-[#123C42] shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <h3 className="font-display font-bold text-lg text-[#123C42]">
-                    Demonstration Request Validated
+                    Appointment Request Sent
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                    Thank you, <strong className="font-semibold">{submittedData.fullName}</strong>. Your appointment request parameters have passed client-side validation successfully.
+                    Thank you, <strong className="font-semibold">{submittedData.fullName}</strong>. Your request has been emailed to the studio. This is a request only; the appointment is not booked until the clinic confirms it.
                   </p>
                 </div>
               </div>
@@ -203,20 +234,15 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                 )}
               </div>
 
-              {/* Technical Architecture Note */}
+              {/* Request status note */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
                 <div className="flex items-center gap-2 font-semibold text-slate-800">
                   <AlertCircle className="w-4 h-4 text-slate-600" />
-                  <span>Production Integration Architecture</span>
+                  <span>What happens next?</span>
                 </div>
                 <p className="leading-relaxed">
-                  In a production environment, submitting this form connects to a secure healthcare backend endpoint (e.g. POST to <code className="bg-slate-200 px-1 py-0.5 rounded text-[11px]">/api/appointments</code>), triggering:
+                  The studio will review your preferred date and time and contact you at {submittedData.email}. No appointment is confirmed automatically by this form.
                 </p>
-                <ul className="list-disc list-inside space-y-1 text-slate-500 pl-1">
-                  <li>Direct sync with practice management software (EHR/PMS calendar API)</li>
-                  <li>Automated double-opt-in confirmation email to {submittedData.email}</li>
-                  <li>SMS reminder 24 hours prior with pre-visit health screening link</li>
-                </ul>
               </div>
 
               <div className="flex justify-end pt-2">
@@ -237,7 +263,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
               <div className="p-3 bg-[#FAF9F6] border border-slate-200/80 rounded-xl text-xs text-slate-600 flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-[#123C42] shrink-0 mt-0.5" />
                 <span>
-                  Demo request form: Enter your preferred details. No sensitive health history or credit card is collected.
+                  Send an appointment request to the studio. Your preferred date and time are not confirmed until the team replies.
                 </span>
               </div>
 
@@ -451,7 +477,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin text-[#D6B477]" />
-                      <span>Validating Request...</span>
+                      <span>Sending Request...</span>
                     </>
                   ) : (
                     <>
