@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, MessageSquare, Sparkles, ArrowRight } from 'lucide-react';
 import { PATIENT_JOURNEY_STEPS } from '../data/clinicData';
+import consultationImage from '../assets/images/patient_consultation_scene_1793092933907.jpg';
 
 interface PatientExperienceProps {
   onOpenBooking: () => void;
@@ -62,7 +63,7 @@ export const PatientExperience: React.FC<PatientExperienceProps> = ({ onOpenBook
           <div className="lg:col-span-6 relative aspect-[4/3] lg:aspect-auto lg:h-full bg-slate-100 min-h-[300px]">
             {!imageError ? (
               <img
-                src="/src/assets/images/patient_consultation_scene_1793092933907.jpg"
+                src={consultationImage}
                 alt="Patient and dentist reviewing digital 3D aligner plan on tablet"
                 referrerPolicy="no-referrer"
                 onError={() => setImageError(true)}
