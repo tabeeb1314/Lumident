@@ -16,8 +16,6 @@ import { CLINIC_CONTACT } from '../data/clinicData';
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
 
-const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
-
 interface ContactFormData {
   name: string;
   email: string;
@@ -36,7 +34,6 @@ export const ContactSection: React.FC = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState('');
   const [submitError, setSubmitError] = useState('');
 
   const validate = (): boolean => {
@@ -230,7 +227,7 @@ export const ContactSection: React.FC = () => {
                     </h4>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
-                    Thank you, <strong>{formData.name}</strong>. Your message has been submitted to the Lumident inbox. We’ll be able to reply to {formData.email}.
+                    Thank you, <strong>{formData.name}</strong>. The form service accepted your submission. This portfolio site cannot guarantee email delivery; if you do not receive a response, please contact the site owner directly.
                   </p>
                   <button
                     onClick={() => {
@@ -324,7 +321,6 @@ export const ContactSection: React.FC = () => {
                     {errors.message && <p className="text-[11px] text-rose-500 mt-1">{errors.message}</p>}
                   </div>
 
-                  {submitError && <p role="alert" className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-3">{submitError} If this is the first submission, the inbox owner may need to activate the form from the confirmation email.</p>}
                   {submitError && <p role="alert" className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-3">{submitError} If this is the first submission, the inbox owner may need to activate the form using the confirmation email.</p>}
                   <div className="flex items-center justify-between pt-2">
                     <p className="text-[11px] text-slate-400">
