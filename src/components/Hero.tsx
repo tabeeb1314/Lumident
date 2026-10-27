@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import heroImage from '../assets/images/hero_lumident_studio_1793092933050.jpg';
 import { Calendar, ArrowRight, ShieldCheck, Sparkles, Clock3, Smile } from 'lucide-react';
 
 interface HeroProps {
@@ -95,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
               <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200/80 bg-white">
                 {!imageError ? (
                   <img
-                    src="/src/assets/images/hero_lumident_studio_1793092933050.jpg"
+                    src={heroImage}
                     alt="Lumident Dental Studio serene reception and modern clinical suite"
                     referrerPolicy="no-referrer"
                     onError={() => setImageError(true)}
