@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { CLINIC_CONTACT } from '../data/clinicData';
 
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/tabeebwasit99@gmail.com';
+
 interface ContactFormData {
   name: string;
   email: string;
@@ -32,6 +34,7 @@ export const ContactSection: React.FC = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validate = (): boolean => {
     const errs: Partial<Record<keyof ContactFormData, string>> = {};
@@ -54,15 +57,38 @@ export const ContactSection: React.FC = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setSubmitError('');
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `[Lumident Contact] ${formData.subject}`,
+          _replyto: formData.email.trim(),
+          _template: 'table',
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject,
+          message: formData.message.trim(),
+          form_type: 'Contact message',
+          _honey: '',
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok || String(result.success) !== 'true') {
+        throw new Error(result.message || 'The message could not be sent. Please try again.');
+      }
       setIsSubmitted(true);
-    }, 700);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -197,15 +223,16 @@ export const ContactSection: React.FC = () => {
                   <div className="flex items-center gap-2 justify-center sm:justify-start">
                     <CheckCircle2 className="w-5 h-5 text-[#123C42]" />
                     <h4 className="font-display font-bold text-base text-[#123C42]">
-                      Message Received (Demo Submission)
+                      Message Sent
                     </h4>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
-                    Thank you, <strong>{formData.name}</strong>. In a live deployment, your message routes directly to the front desk coordination dashboard. Because this is a portfolio demonstration website, no actual transmission was executed.
+                    Thank you, <strong>{formData.name}</strong>. Your message has been submitted to the Lumident inbox. We’ll be able to reply to {formData.email}.
                   </p>
                   <button
                     onClick={() => {
                       setIsSubmitted(false);
+                      setSubmitError('');
                       setFormData({ name: '', email: '', subject: 'General Question', message: '' });
                     }}
                     className="mt-2 px-4 py-2 text-xs font-semibold text-white bg-[#123C42] rounded-lg hover:bg-[#0E2C31] transition-colors"
@@ -294,9 +321,10 @@ export const ContactSection: React.FC = () => {
                     {errors.message && <p className="text-[11px] text-rose-500 mt-1">{errors.message}</p>}
                   </div>
 
+                  {submitError && <p role="alert" className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-3">{submitError} If this is the first submission, the inbox owner may need to activate the form from the confirmation email.</p>}
                   <div className="flex items-center justify-between pt-2">
                     <p className="text-[11px] text-slate-400">
-                      Portfolio demo: Client-side validation active.
+                      Your message will be emailed securely via our form service.
                     </p>
                     <button
                       type="submit"
